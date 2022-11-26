@@ -43,9 +43,22 @@ async function removeNotes (id) {
     console.log(chalk.red.inverse('Note was removed'))
 }
 
+async function editNotes (id, data) {
+    const notes = await getNotes()
+    const newNotes = notes.map(n => {
+        if (n.id === id) {
+            n.title = data
+        }
+    })
+    await fs.writeFile(notesPath, JSON.stringify(newNotes))
+}
+
+
 
 module.exports = {
     addNote,
     printNotes,
-    removeNotes
+    removeNotes,
+    getNotes,
+    editNotes
 }
