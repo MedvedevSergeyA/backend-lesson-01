@@ -9,11 +9,11 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('click', (e) => {
     if (e.target.dataset.type === 'edit') {
-        const data = window.prompt('Новое название')
+        const element = e.target.closest('li')
+        const data = prompt('Новое название').trim()
         const id = e.target.dataset.id
-            edit(id, data).then(() => {
-                location.reload()
-            })
+        edit(id, data)
+        element.firstElementChild.textContent = data
     }
 })
 
@@ -23,10 +23,20 @@ async function remove(id) {
     })
 }
 
-async function edit (id) {
-    await fetch(`/${id}`, {
-        method: 'PUT',
-    })
+async function edit(id, data) {
+    if(data) {
+        await fetch(`/${id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({note: data})
+        })
+    }
 }
+
+
+
+
 
 
